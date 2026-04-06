@@ -282,8 +282,6 @@ filter: brightness(1.2);
 
 <!-- ✅ NEU: Logo -->
 
-<img src="logo.png" id="logo">
-
 <h1>Unregelmäßige Verben - Vokabelspiel 🎮</h1>
 
 <select id="themeSelector">
@@ -342,7 +340,7 @@ document.getElementById("themeSelector").addEventListener("change", e=>{document
 function shuffleArray(array){ for(let i=array.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [array[i],array[j]]=[array[j],array[i]];}}
 
 // --- Verben ---
-let level2=[["sein","be","was/were","been"],["haben","have","had","had"],["werden","become","became","become"],["beginnen","begin","began","begun"],["brechen","break","broke","broken"],["bringen","bring","brought","brought"],["wählen","choose","chose","chosen"],["kommen","come","came","come"],["kosten","cost","cost","cost"],["schneiden","cut","cut","cut"],["tun","do","did","done"],["trinken","drink","drank","drunk"],["essen","eat","ate","eaten"],["fallen","fall","fell","fallen"],["fühlen","feel","felt","felt"],["finden","find","found","found"],["fliegen","fly","flew","flown"],["vergessen","forget","forgot","forgotten"],["bekommen","get","got","gotten"],["geben","give","gave","given"],["gehen","go","went","gone"],["haben","have","had","had"],["hören","hear","heard","heard"],["halten","hold","held","held"],["lernen","learn","learnt","learnt"],["lassen","let","let","let"],["liegen","lie","lay","lain"],["verlieren","lose","lost","lost"],["machen","make","made","made"],["meinen","mean","meant","meant"],["treffen","meet","met","met"],["zahlen","pay","paid","paid"],["legen","put","put","put"],["lesen","read","read","read"],["laufen","run","ran","run"],["sagen","say","said","said"],["sehen","see","saw","seen"],["verkaufen","sell","sold","sold"],["schicken","send","sent","sent"],["setzen","set","set","set"],["schreiben","write","wrote","written"],["schwimmen","swim","swam","swum"],["nehmen","take","took","taken"],["lehren","teach","taught","taught"],["erzählen","tell","told","told"],["denken","think","thought","thought"],["verstehen","understand","understood","understood"],["tragen","wear","wore","worn"],["gewinnen","win","won","won"],["wachsen","grow","grew","grown"],["ziehen","pull","pulled","pulled"]];
+let level2=[["sein","be","was/were","been"],["haben","have","had","had"],["werden","become","became","become"],["beginnen","begin","began","begun"],["brechen","break","broke","broken"],["bringen","bring","brought","brought"],["wählen","choose","chose","chosen"],["kommen","come","came","come"],["kosten","cost","cost","cost"],["schneiden","cut","cut","cut"],["tun","do","did","done"],["trinken","drink","drank","drunk"],["essen","eat","ate","eaten"],["fallen","fall","fell","fallen"],["fühlen","feel","felt","felt"],["finden","find","found","found"],["fliegen","fly","flew","flown"],["vergessen","forget","forgot","forgotten"],["bekommen","get","got","gotten"],["geben","give","gave","given"],["gehen","go","went","gone"],["hören","hear","heard","heard"],["halten","hold","held","held"],["lernen","learn","learnt","learnt"],["lassen","let","let","let"],["liegen","lie","lay","lain"],["verlieren","lose","lost","lost"],["machen","make","made","made"],["meinen","mean","meant","meant"],["treffen","meet","met","met"],["zahlen","pay","paid","paid"],["legen","put","put","put"],["lesen","read","read","read"],["laufen","run","ran","run"],["sagen","say","said","said"],["sehen","see","saw","seen"],["verkaufen","sell","sold","sold"],["schicken","send","sent","sent"],["setzen","set","set","set"],["schreiben","write","wrote","written"],["schwimmen","swim","swam","swum"],["nehmen","take","took","taken"],["lehren","teach","taught","taught"],["erzählen","tell","told","told"],["denken","think","thought","thought"],["verstehen","understand","understood","understood"],["tragen","wear","wore","worn"],["gewinnen","win","won","won"],["wachsen","grow","grew","grown"],["ziehen","pull","pulled","pulled"]];
 
 // --- Spielvariablen ---
 let punkte=0, aktuelleFrage=0, zeit=10, timerID, leben=3, playerName="";
@@ -397,7 +395,7 @@ function startTimer(){ clearInterval(timerID); zeit=10; updateTimerBar();
     zeit-=0.1;
     if(zeit<0) zeit=0;
     updateTimerBar();
-    if(zeit===0){ clearInterval(timerID); zeitAbgelaufen(); }
+if(zeit <= 0)	{ clearInterval(timerID); zeitAbgelaufen(); }
   },100);
 }
 
@@ -493,7 +491,8 @@ document.getElementById("wort").innerHTML = `
   }
   while(options.length < 4){
     let candidate = level2[Math.floor(Math.random()*level2.length)][formIndex + 1];
-    if(!options.includes(candidate) && candidate[0] !== w[0]) options.push(candidate);
+    if(!options.includes(candidate) && candidate !== w[formIndex + 1]
+		options.push(candidate);
   }
   shuffleArray(options);
   options.forEach(opt => {
@@ -532,30 +531,6 @@ function updateProgress(){ const pr = ((aktuelleFrage+1)/level2.length)*100; doc
 </script>
 
 </body>
-<div id="mainCenter">
-<img src="logo.png" id="logo">
 
-<div id="mainCenter">
-
-
-  <div id="startScreen"></div>
-
-  <div id="gameWrapper">
-    <div id="gameArea">
-
-    </div>
-  </div>
-
-  <div id="top10Popup"></div>
-  <div id="overlay"></div>
-  <div id="timeOverPopup"></div>
-
-</div>
-
-<!-- Highscore bleibt draußen -->
-<div id="highscoresContainer"></div>
-  <div id="footer">
-  © 2026 miStudia.de - Markus Autsch – Vokabelspiel
-</div>
 
 </html>
