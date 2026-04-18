@@ -2068,11 +2068,23 @@ const langMap = {
 
   let preferredVoice;
 
-  if(frageLang === "en"){
-    preferredVoice = voices.find(v => 
-      v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
-    ) || voices.find(v => v.lang.startsWith("en"));
-  }
+if(frageLang === "en"){
+
+  // 🔥 Priorität: gute Stimmen zuerst
+  preferredVoice = voices.find(v => 
+    v.name.includes("Google") && v.lang.startsWith("en")
+  )
+  || voices.find(v => 
+    v.name.includes("Female") && v.lang.startsWith("en")
+  )
+  || voices.find(v => 
+    v.name.includes("Samantha") // macOS beste Stimme
+  )
+  || voices.find(v => 
+    v.name.includes("Microsoft") && v.lang.startsWith("en")
+  )
+  || voices.find(v => v.lang.startsWith("en"));
+}
 
   if(frageLang === "de"){
     preferredVoice = voices.find(v => v.lang.startsWith("de"));
