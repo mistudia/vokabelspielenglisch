@@ -78,6 +78,16 @@ transition:all 0.5s;
   display: none;
 }
 
+.tile-number {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+
+  font-size: 14px;
+  opacity: 0.7;
+  font-weight: bold;
+}
+
 .slider {
   position: absolute;
   cursor: pointer;
@@ -285,6 +295,12 @@ position: relative;
   top: 120px;         /* 👈 frei einstellbar */
   z-index: 999;
 }
+#inventoryContainer {
+  position: fixed;
+  left: 20px;   /* links statt rechts */
+  top: 220px;
+  z-index: 999;
+}
 
 .highscoreBox {
   position: sticky;
@@ -488,12 +504,21 @@ position: relative;
 .highscoreBox {
   animation: slideInRight 0.6s ease;
 }
+
+.highscore-item.new-score {
+  border: 3px solid #00ff88;
+  box-shadow: 0 0 20px #00ff88;
+  background: linear-gradient(135deg, #00ff88, #00c853);
+  color: black;
+}
+
 .highscore-item.me {
   border: 2px solid #00e5ff;
   box-shadow: 0 0 15px #00e5ff;
+
+  font-weight: bold;     /* 🔥 fett */
+  font-style: italic;    /* 🔥 kursiv */
 }
-
-
 
 
 
@@ -521,7 +546,7 @@ position: relative;
 }
 #pauseBtn {
   position: relative;
-  z-index: 10001; /* höher als Overlay */
+  z-index: 100; /* höher als Overlay */
   height: 60px;
   min-width: 60px;
 
@@ -540,8 +565,6 @@ position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  margin-left: 10px;
 }
 
 
@@ -583,14 +606,61 @@ position: relative;
 .start-box h2 {
   display: none;
 }
+/* 🔒 Lehrer-Modus komplett ausblenden */
+/* 🔒 Lehrer-Modus gezielt ausblenden */
 
+/* Textfelder weg */
+#inputLang1,
+#inputLang2 {
+  display: none !important;
+}
+
+/* Excel Upload weg */
+#excelFile {
+  display: none !important;
+}
+
+/* gelber Button weg */
+#startCustomBtn {
+  display: none !important;
+}
+
+/* 🔥 WICHTIG: grüner Button bleibt sichtbar */
+#startDefaultBtn {
+  display: block !important;
+}
 .highscore-title {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 12px;   /* 👉 Abstand nach unten */
- text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: 500;
+
+  color: #fff;
+  background: #1e88e5;
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  display: inline-block;
+  margin: 0 auto 10px auto;
+
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+@keyframes glowTitle {
+  0% {
+    text-shadow:
+      0 0 5px rgba(255,152,0,0.4),
+      0 0 10px rgba(255,152,0,0.2);
+  }
+  50% {
+    text-shadow:
+      0 0 20px rgba(255,152,0,0.9),
+      0 0 35px rgba(255,152,0,0.6);
+  }
+  100% {
+    text-shadow:
+      0 0 5px rgba(255,152,0,0.4),
+      0 0 10px rgba(255,152,0,0.2);
+  }
 }
 
 .highscore-entry {
@@ -694,12 +764,23 @@ font-size:32px;
 .score-box {
   background: linear-gradient(135deg, #ffd54f, #ff9800);
   color: #000;
-  box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
+
+  height: 70px;          /* 🔥 größer */
+  min-width: 140px;
+
+  font-size: 26px;       /* 🔥 größer */
+  font-weight: bold;
+
+  box-shadow: 0 0 20px rgba(255,152,0,0.8);
+
+  transform: scale(1.1); /* 🔥 leicht größer als Buttons */
 }
 
 .score-box #punkte {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
+  transition: transform 0.2s ease;
+
 }
 .start-box {
   align-items: stretch; /* 🔥 statt center */
@@ -774,7 +855,6 @@ font-size:32px;
   min-width: 70px;              /* 🔥 wichtig */
   height: 60px;                 /* 🔥 überschreibt .box Höhe */
 
-  margin-left: 10px;
 }
 
 #backBtn:hover {
@@ -1036,7 +1116,8 @@ filter: brightness(1.2);
 
   transition: all 0.25s ease;
 }
-#customVocabInput:focus {
+#inputLang1:focus,
+#inputLang2:focus {
   border-color: #ff9800;
   box-shadow:
     0 0 0 3px rgba(255,152,0,0.3),
@@ -1223,7 +1304,8 @@ filter: brightness(1.2);
 .night #textAntwort,
 
 
-.night #customVocabInput {
+.night #inputLang1,
+.night #inputLang2 {
   background: linear-gradient(135deg, #2a2a40, #1e1e2f);
   color: #fff;
   border: 2px solid #3f51b5;
@@ -1254,7 +1336,8 @@ filter: brightness(1.2);
   transform: scale(1.08);
   box-shadow: 0 10px 25px rgba(255,193,7,0.8);
 }
-#customVocabInput {
+#inputLang1,
+#inputLang2 {
   background: linear-gradient(135deg, #fff176, #ffd54f);
   color: #000;
   border: 2px solid #ffb300;
@@ -1294,7 +1377,7 @@ filter: brightness(1.2);
 #startItemBook {
   position: fixed;
   left: 20px;
-  top: 120px;
+  top: 220px;
 
   max-width: 240px;
   z-index: 999;
@@ -1320,6 +1403,191 @@ filter: brightness(1.2);
   opacity: 0.7;
 }
 
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 5px #00e5ff; }
+  50% { box-shadow: 0 0 20px #00e5ff; }
+  100% { box-shadow: 0 0 5px #00e5ff; }
+}
+
+.new-score {
+  border: 3px solid #00ff88;
+  box-shadow: 0 0 20px #00ff88;
+  animation: glowPulse 1.2s infinite;
+}
+
+.highscore-item.new-score.me {
+  font-weight: bold;
+  font-style: italic;
+}
+#statsPanel {
+  display: block;
+  text-align: center;
+  max-width: 1200px;
+  width: 90%;
+  margin: 30px auto;
+
+  padding: 10px;              /* 🔥 weniger Padding */
+  border-radius: 20px;
+
+  background: transparent;    /* 🔥 KEIN grauer Block mehr */
+  backdrop-filter: none;      /* 🔥 Schatten weg */
+}
+
+#dualInput {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+#dualInput textarea {
+  width: 100%;
+  height: 220px;
+}
+
+#dualInput textarea {
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.1),
+    0 8px 20px rgba(0,0,0,0.15);
+}
+
+#statsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 20px;  /* 👉 horizontal */
+  row-gap: 40px;     /* 👉 vertikal */
+padding:18px 12px;
+
+  justify-content: center;
+
+  /* 🔥 NEU */
+  grid-auto-rows: 110px;   /* 👉 feste Höhe für alle */
+}
+@media (max-width: 1000px) {
+  #statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  #statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+.button-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 25px;
+  margin-top: 10px;
+
+  width: 100%;        /* 🔥 GANZE BREITE */
+  flex-basis: 100%;   /* 🔥 neue Zeile erzwingen */
+}
+
+#pauseBtn,
+#backBtn {
+  flex-basis: auto;
+  margin: 0; /* 🔥 GANZ WICHTIG */
+}
+
+/* 🔤 Pinyin Toggle größer */
+#pinyinToggle label {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+#togglePinyinInline {
+  transform: scale(1.6);
+  cursor: pointer;
+  accent-color: #ff9800; /* 🔥 Farbe passend zum Spiel */
+
+}
+
+#togglePinyin {
+  width: 22px;
+  height: 22px;
+  transform: scale(1.8); /* 🔥 größer */
+}
+
+#scoreInline {
+  height: 60px;
+  min-width: 110px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  padding: 0 12px;
+  margin: 0 10px;  /* 🔥 zusätzlicher Abstand nur für Score */
+
+}
+#scoreInline span:first-child {
+  margin-right: 6px;
+}
+
+@keyframes scorePop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.score-pop {
+  animation: scorePop 0.3s ease;
+}
+
+.floating-score {
+  position: absolute;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  color: #ff9800;
+
+  pointer-events: none;
+  z-index: 9999;
+
+  animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-30px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.9);
+  }
+}
+
+.item-entry {
+  text-align: center;   /* 👉 alles mittig */
+}
+
+.input-error {
+  box-shadow: 0 0 15px rgba(255,0,0,0.8);
+}
+
+.correct {
+  background: #4caf50 !important;
+  color: #fff !important;
+}
+
+.wrong {
+  background: #f44336 !important;
+  color: #fff !important;
+}
+
 
 
 
@@ -1341,6 +1609,7 @@ filter: brightness(1.2);
 <div id="startScreen">
 
   <div class="start-box">
+
 
     <label>Dein Name:
       <input id="playerName" placeholder="Name eingeben">
@@ -1388,11 +1657,17 @@ filter: brightness(1.2);
 
   <div id="inputWrapper">
     <div id="highlightLayer"></div>
-    <textarea id="customVocabInput" placeholder="z.B.
-hablar sprechen
-comer essen
-vivir leben/wohnen
-ser/estar sein"></textarea>
+<div id="dualInput">
+  <textarea id="inputLang1" placeholder="z.B.
+hablar
+comer
+vivir"></textarea>
+
+  <textarea id="inputLang2" placeholder="z.B.
+sprechen
+essen
+leben"></textarea>
+</div>
   </div>
 
 <div class="button-group">
@@ -1408,11 +1683,18 @@ ser/estar sein"></textarea>
 </div>
 
 
+</div>   <!-- DIESE ZEILE SUCHEN -->
 
-  </div>
+<!-- 🔥 GENAU HIER EINFÜGEN -->
+<hr style="width:80%; margin:20px auto;">
 
-</div>
+<button id="statsBtn" class="popupBtn">
+  📊 Statistik anzeigen
+</button>
 
+<div id="statsPanel" style="display:none;"></div>
+
+</div>   <!-- startScreen Ende -->
 
 
 <div id="gameWrapper">
@@ -1420,23 +1702,11 @@ ser/estar sein"></textarea>
   <div id="gameArea">
 
 <div id="status" style="display:none;">
-<div id="inventory"></div>
-<div id="itemBook"></div>
 
-<div class="box score-box">
-  <span>Punkte:</span>
-  <span id="punkte">0</span>
-</div>
-
-<div class="box" id="dailyBox">
-  🎯 0 / 20 | 🔥 0
-</div>
-
-
-
-<div class="box" id="comboBox">
-  🔥 Combo x0
-</div>
+  <div id="inventoryContainer">
+    <div id="inventory"></div>
+    <div id="itemBook"></div>
+  </div>
 
 
   <div class="box">
@@ -1451,8 +1721,16 @@ ser/estar sein"></textarea>
 
   <!-- 🔥 HIER rein -->
 
+<div class="button-row">
+  <button id="backBtn">🏠</button>
+
+  <div class="box score-box" id="scoreInline">
+    <span>⭐</span>
+    <span id="punkte">0</span>
+  </div>
+
   <button id="pauseBtn">⏸</button>
-<button id="backBtn">🏠</button>
+</div>
 
 </div>
 
@@ -1466,12 +1744,7 @@ ser/estar sein"></textarea>
 </div>
 
 <div id="themeToggle">
-<div id="pinyinToggle" style="margin-top:10px; display:none;">
-  <label>
-    <input type="checkbox" id="togglePinyin" checked>
-    🔤 Pinyin anzeigen
-  </label>
-</div>
+
 <span id="themeIcon">☀️</span>
  <label class="switch">
     <input type="checkbox" id="themeSwitch">
@@ -1503,8 +1776,6 @@ ser/estar sein"></textarea>
   <button id="checkBtn">OK</button>
 </div>
     <div id="feedback"></div>
-
-  </div>
 
   <div id="highscoresContainer">
     <div id="highscoreList2" class="highscoreBox"></div>
@@ -1546,40 +1817,49 @@ const SUPABASE_URL = "https://bquxcyjcybpfwujtovng.supabase.co";
 const SUPABASE_KEY = "sb_publishable_OyNRNaYaf3EqrY9fHoKHrA_mmR1Lby_";
 
 console.log("JS läuft!");
+
 const ITEMS = {
   sword_fire: {
     name: "🔥 Flammenschwert",
-    rarity: "rare",
+    rarity: "common",
+    stars: 1,
     effect: "extraPoints",
-    desc: "+1 Punkt pro richtige Antwort"
+    desc: "+1 Punkt pro richtige Antwort",
+    unlock: "Erreiche eine 10er Combo 🔥"
   },
   shield: {
     name: "🛡️ Schutzschild",
-    rarity: "common",
+    rarity: "rare",
+    stars: 2,
     effect: "blockError",
-    desc: "schützt Leben"
+    desc: "schützt Leben",
+    unlock: "Korrigiere alle Fehler 🧠"
   },
   clock: {
     name: "⏳ Zeit-Booster",
     rarity: "epic",
+    stars: 3,
     effect: "slowTime",
-    desc: "verlangsamt timer"
+    desc: "verlangsamt timer",
+    unlock: "Erreiche 1000 Punkte ⏳"
   },
   crown: {
     name: "👑 Königskrone",
     rarity: "legendary",
+    stars: 4,
     effect: "keepCombo",
-    desc: "schützt Combo"
+    desc: "schützt Combo",
+    unlock: "Perfektes Spiel ohne Fehler 👑"
   }
 };
 
 // 🏆 ACHIEVEMENTS SYSTEM
 let achievements = {
-  sword_fire: false,
-  shield: false,
-  clock: false,
-  crown: false,
-  trophy_top10: false
+  sword_fire: { unlocked: false, used: false, reason: "" },
+  shield: { unlocked: false, used: false, reason: "" },
+  clock: { unlocked: false, used: false, reason: "" },
+  crown: { unlocked: false, used: false, reason: "" },
+  trophy_top10: { unlocked: false, used: false, reason: "" }
 };
 
 function saveAchievements(){
@@ -1597,9 +1877,18 @@ loadAchievements();
 
 
 async function loadHighscoresOnline(){
+aktuelleZeit = parseInt(document.getElementById("timeSelector").value);
+spielModus = document.getElementById("modeSelector").value;
+aktuelleSprache = document.getElementById("languageSelector").value;
 
-  const url = SUPABASE_URL +
-`/rest/v1/highscores?select=*&time=eq.${aktuelleZeit}&mode=eq.${spielModus}&order=score.desc&limit=10`;
+const url = SUPABASE_URL +
+`/rest/v1/highscores?select=*
+&time=eq.${aktuelleZeit}
+&mode=eq.${spielModus}
+&language=eq.${aktuelleSprache}
+&order=score.desc,time.asc
+&limit=10`;
+
   console.log("URL:", url);
 
   const res = await fetch(url, {
@@ -1621,7 +1910,7 @@ async function loadHighscoresOnline(){
 }
 
 
-async function addHighscoreOnline(name, punkte){
+async function addHighscoreOnline(name, punkte, timestamp){
 
   try {
     await fetch(SUPABASE_URL + "/rest/v1/highscores", {
@@ -1632,20 +1921,20 @@ async function addHighscoreOnline(name, punkte){
         "Authorization": "Bearer " + SUPABASE_KEY,
         "Prefer": "return=minimal"
       },
-body: JSON.stringify({
-  name: name,
-  score: punkte,
-  time: aktuelleZeit,   // 🔥 FIX
-  mode: spielModus
-})
-    });
 
-    console.log("✅ Highscore online gespeichert");
+      body: JSON.stringify({
+        name: name,
+        score: punkte,
+        time: aktuelleZeit,
+        mode: spielModus,
+        language: aktuelleSprache,
+        created_at: timestamp   // ✅ korrekt
+      })
+    });
 
   } catch(err){
     console.error("❌ Fehler beim Speichern:", err);
   }
-
 }
 
 function playSound(id){
@@ -1655,27 +1944,51 @@ function playSound(id){
     s.play().catch(()=>{}); // 🔥 HIER
   }
 }
-function unlockAchievement(text){
+function unlockAchievement(text, type){
 
   const popup = document.createElement("div");
-
+popup.style.opacity = "0";
+popup.style.transition = "all 0.4s ease";
+popup.style.opacity = "0";
+popup.style.transition = "all 0.4s ease";
   popup.innerText = text;
   popup.style.position = "fixed";
-  popup.style.top = "20%";
-  popup.style.left = "50%";
-  popup.style.transform = "translateX(-50%)";
+popup.style.top = "50%";
+popup.style.left = "50%";
+popup.style.transform = "translate(-50%, -50%)"; // 🔥 perfekt zentriert
 
-  popup.style.background = "gold";
   popup.style.padding = "20px";
   popup.style.borderRadius = "15px";
   popup.style.fontSize = "24px";
   popup.style.zIndex = "10000";
+  popup.style.color = "white";
+
+  // 🎨 Farben je nach Item
+  let bg = "#2196f3"; // default blau
+
+  if(type === "shield") bg = "#2196f3";       // 🔵
+  if(type === "sword_fire") bg = "#9c27b0";   // 🟣
+  if(type === "clock") bg = "#ffc107";        // 🟡
+  if(type === "crown") bg = "#4caf50";        // 🟢
+
+  popup.style.background = bg;
+popup.style.boxShadow = "0 0 25px " + bg;
 
   document.body.appendChild(popup);
+setTimeout(()=>{
+  popup.style.opacity = "1";
+  popup.style.transform = "translate(-50%, -50%) scale(1)";
+},10);
+
+setTimeout(()=>{
+  popup.style.opacity = "0";
+  popup.style.transform = "translate(-50%, -40%) scale(0.8)";
 
   setTimeout(()=>{
     popup.remove();
-  },2000);
+  },300);
+
+},3500);
 }
 
 function formatZeit(sekunden){
@@ -1691,12 +2004,15 @@ function formatZeit(sekunden){
 }
 
 document.getElementById("backBtn").onclick = function(){
-document.getElementById("startItemBook").style.display = "block";
+
+  updateAllHighscores(); // 🔥 bleibt
+
+  document.getElementById("startItemBook").style.display = "block";
 
   resetGameState();
 
   // --- Reset Werte ---
-state.punkte = 0;
+  state.punkte = 0;
   aktuelleFrage = 0;
   leben = 3;
   combo = 0;
@@ -1707,7 +2023,7 @@ state.punkte = 0;
   document.getElementById("top10Popup").style.display = "none";
   document.getElementById("feedback").innerText = "";
 
-updateScoreUI();
+  updateScoreUI();
   document.getElementById("gesamtzeit").innerText = formatZeit(0);
 
   updateLebenAnzeige();
@@ -1857,6 +2173,11 @@ function updateScoreUI(){
   const el = document.getElementById("punkte");
   if(el){
     el.innerText = state.punkte;
+
+    // 🔥 Animation triggern
+    el.classList.remove("score-pop");
+    void el.offsetWidth; // reflow → Animation neu starten
+    el.classList.add("score-pop");
   }
 }
 
@@ -1876,9 +2197,38 @@ let aktuelleListe = [];
 
 let combo = 0;
 let answerLocked = false;
+let inventory = [];
+
+state.shieldActive = false;
+state.timeFreeze = false;
+// 📊 STATISTIK
+let vocabStats = {};
+
+function getVocabKey(v){
+  return (v[frageLang] || []).join("/") + "→" + (v[antwortLang] || []).join("/");
+}
+
+function saveStats(){
+  localStorage.setItem("vocabStats", JSON.stringify(vocabStats));
+}
+
+function loadStats(){
+  const data = localStorage.getItem("vocabStats");
+  if(data){
+    vocabStats = JSON.parse(data);
+  }
+}
+
+loadStats();
 let highscoreSchonVerarbeitet = false; // 🔥 NEU
+let gameEnded = false;
+let isSavingScore = false;
+let endHadMistake = false; // 🔥 NEU
 let aktuelleZeit = 60;
-let isPaused = false;
+let lastScore = null;
+let lastTimestamp = null; // ⭐ FEHLT
+let isPaused = false
+let aktuelleSprache = "es-de"; // 🔥 NEU
 let gesamtSpielZeit=60, gesamtSekunden=gesamtSpielZeit, gesamtTimerID;
 let gesamtTimerLaeuft = false;
 // 🧠 SPACED REPETITION SPEICHERN
@@ -1909,6 +2259,7 @@ function nächsteLernVokabel(){
 
 
 function loadLearningData(){
+
   const data = localStorage.getItem("lernVokabeln");
   if(data){
     vokabeln = JSON.parse(data);
@@ -1917,6 +2268,8 @@ function loadLearningData(){
 
 // 🔥 direkt laden beim Start
 loadLearningData();
+
+
 
 function getHighscores(){ 
   try {
@@ -1935,6 +2288,17 @@ function saveHighscores(hs){
 
 async function updateAllHighscores(){
 
+  // 🔥 HIER EINFÜGEN (GANZ OBEN)
+  aktuelleZeit = parseInt(document.getElementById("timeSelector").value);
+  spielModus = document.getElementById("modeSelector").value;
+  aktuelleSprache = document.getElementById("languageSelector").value;
+
+  console.log("🔍 FILTER:", {
+    zeit: aktuelleZeit,
+    modus: spielModus,
+    sprache: aktuelleSprache
+  });
+
   let hs = [];
 
   try {
@@ -1952,32 +2316,56 @@ async function updateAllHighscores(){
     1020: "17 Minuten"
   };
 
-  let html = `
-    <div class='highscore-title'>🏆 Online Highscore</div>
-    <div class='highscore-subtitle'>(${zeitText[aktuelleZeit]})</div>
-  `;
+let spracheText = {
+  "es-de": "🇪🇸 → 🇩🇪",
+  "de-es": "🇩🇪 → 🇪🇸",
+  "en-de": "🇬🇧 → 🇩🇪",
+  "de-en": "🇩🇪 → 🇬🇧",
+  "fr-de": "🇫🇷 → 🇩🇪",
+  "de-fr": "🇩🇪 → 🇫🇷",
+  "zh-de": "🇨🇳 → 🇩🇪",
+  "de-zh": "🇩🇪 → 🇨🇳"
+};
+
+let html = `
+  <div class='highscore-title'>🏆 Online Highscore</div>
+  <div class='highscore-subtitle'>
+    (${zeitText[aktuelleZeit]} | ${spracheText[aktuelleSprache]})
+  </div>
+`;
+
 
   // 👉 WICHTIG: wenn leer
   if(!hs || hs.length === 0){
     html += `<div style="text-align:center; opacity:0.7;">Noch keine Einträge</div>`;
   }
 
-  hs.forEach((e,i)=>{
+hs.forEach((e,i)=>{
 
-    let klasse = "";
-    if(i === 0) klasse = "gold";
-    else if(i === 1) klasse = "silver";
-    else if(i === 2) klasse = "bronze";
+  let klasse = "";
 
-html += `
-  <div class="highscore-item ${klasse}">
-    ${i+1}. ${e.name} — ${e.score}
-  </div>
-`;
+  if(i === 0) klasse = "gold";
+  else if(i === 1) klasse = "silver";
+  else if(i === 2) klasse = "bronze";
 
+const isNew =
+  e.name === playerName &&
+  e.score === lastScore &&
+  e.created_at === lastTimestamp;
 
+if(e.name === playerName){
+  klasse += " me";
+}
 
-  });
+if(e.name === playerName && e.score === lastScore){
+  klasse += " new-score";
+}
+  html += `
+    <div class="highscore-item ${klasse}">
+      ${i+1}. ${e.name} — ${e.score}
+    </div>
+  `;
+});
 
   document.getElementById("highscoreList2").innerHTML = html;
 }
@@ -2068,23 +2456,11 @@ const langMap = {
 
   let preferredVoice;
 
-if(frageLang === "en"){
-
-  // 🔥 Priorität: gute Stimmen zuerst
-  preferredVoice = voices.find(v => 
-    v.name.includes("Google") && v.lang.startsWith("en")
-  )
-  || voices.find(v => 
-    v.name.includes("Female") && v.lang.startsWith("en")
-  )
-  || voices.find(v => 
-    v.name.includes("Samantha") // macOS beste Stimme
-  )
-  || voices.find(v => 
-    v.name.includes("Microsoft") && v.lang.startsWith("en")
-  )
-  || voices.find(v => v.lang.startsWith("en"));
-}
+  if(frageLang === "en"){
+    preferredVoice = voices.find(v => 
+      v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
+    ) || voices.find(v => v.lang.startsWith("en"));
+  }
 
   if(frageLang === "de"){
     preferredVoice = voices.find(v => v.lang.startsWith("de"));
@@ -2117,7 +2493,9 @@ function startTimer(){
   clearInterval(timerID);
 
   timerID=setInterval(()=>{
-let speed = achievements.clock ? 0.07 : 0.1;
+let speed = state.timeFreeze ? 0 : 0.1;
+if(state.timeFreeze) return;
+
 zeit = Math.max(0, zeit - speed);
 if (zeit < 0) zeit = 0;
     updateTimerBar();
@@ -2189,24 +2567,7 @@ if(f) f.volume = 0.3;
 
 function updateLebenAnzeige(){ let str=""; for(let i=0;i<leben;i++) str+="❤️"; document.getElementById("leben").innerHTML=str; }
 
-function updateComboAnzeige(){
-const el = document.getElementById("comboBox");
-if(!el) return;
-
-el.innerText = "🔥 Combo x" + combo;
-
-  // 🔥 Pulse-Effekt
-  el.classList.remove("combo-fire");
-  void el.offsetWidth;
-  el.classList.add("combo-fire");
-
-  // 🔥 HOT MODE ab Combo 5
-  if(combo >= 5){
-    el.classList.add("combo-hot");
-  } else {
-    el.classList.remove("combo-hot");
-  }
-}
+function updateComboAnzeige(){}
 
 
 function startGesamtTimer(){ 
@@ -2235,67 +2596,41 @@ spielBeenden("time");
   },1000);
 }
 
-function addHighscore(name,punkte){
-if(highscoreSchonVerarbeitet) return;
-if(isCustomMode){
-  console.log("🚫 Custom Mode → kein Highscore");
-  return;
-}
+async function addHighscore(name, punkte){
 
-addHighscoreOnline(name, state.punkte);
-  let hs = getHighscores();
-
-hs.push({name, punkte: state.punkte});
-  hs.sort((a,b)=>b.punkte-a.punkte);
-
-  if(hs.length>10) hs = hs.slice(0,10);
-
-  saveHighscores(hs);
-  updateAllHighscores();
-
-let rang = hs.findIndex(e => e.punkte === punkte) + 1;
-  // 🥇 Platz 1 → MIT Elefant
-if(!hs || hs.length === 0) return;
-
-if(rang === 1 && !highscoreSchonVerarbeitet){
-
-  highscoreSchonVerarbeitet = true;
-
-  console.log("👑 Platz 1 → Elefant!");
-
-  jubelChoreo();
-
-  document.getElementById("feedback").innerText = "👑 PLATZ 1!!!";
-}
-
-  // 🥈🥉 Platz 2–3 → OHNE Elefant
-  else if(rang === 2 || rang === 3){
-
-    document.getElementById("feedback").innerText = "🏆 TOP 3!";
+  if(isSavingScore){
+    console.log("🚫 Doppeltes Speichern verhindert");
+    return;
   }
 
-// 🏆 ACHIEVEMENT: Top 10
-if(rang <= 10 && !achievements.trophy_top10){
-  achievements.trophy_top10 = true;
-  saveAchievements();
-  unlockAchievement("🏆 Top 10 erreicht!");
-  renderInventory(); // 🔥 DAS FEHLT
-renderItemBook();
-}
+  isSavingScore = true;
 
+  try {
 
-// 👉 Top 10 Popup bleibt IMMER
-if(rang > 0 && rang <= 10){
-  showTop10Popup(name, punkte, rang);
-}
-}
+    if(isCustomMode){
+      console.log("🚫 Custom Mode → kein Highscore");
+      return;
+    }
 
+    const timestamp = new Date().toISOString();
+
+    await addHighscoreOnline(name, state.punkte, timestamp);
+
+    lastScore = state.punkte;
+    lastTimestamp = timestamp;
+
+    await updateAllHighscores();
+
+  } catch(err){
+    console.error("❌ Fehler beim Speichern:", err);
+  } finally {
+    isSavingScore = false;
+  }
+}
 
 function spielZurücksetzen(){
 
   resetGameState();
-
-addHighscore(playerName, state.punkte);
 
   // Reset Werte
 state.punkte = 0;
@@ -2419,10 +2754,44 @@ if(w.hsk){
 // 👉 Haupt-HTML
 let html = `
 <div class="wort-box">
-  ${frageText}
-  <br><small>${level}</small>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap;">
+    
+    <div>${frageText}</div>
+
+    ${frageLang === "zh" ? `
+      <label style="font-size:16px; cursor:pointer;">
+        <input type="checkbox" id="togglePinyinInline" ${showPinyin ? "checked" : ""}>
+        🔤
+      </label>
+    ` : ""}
+
+  </div>
+
+  ${spielModus === "learn" ? `<br><small>${level}</small>` : ""}
   ${extraInfo}
+  </div>  
+
 `;
+// 📊 Statistik anzeigen
+const key = getVocabKey(w);
+const stats = vocabStats[key];
+
+if(stats){
+  const total = stats.correct + stats.wrong;
+  const quote = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
+
+  html += `
+    <div style="font-size:14px; opacity:0.7;">
+      ✅ ${stats.correct} | ❌ ${stats.wrong} | 📊 ${quote}%
+    </div>
+  `;
+
+  if(stats.wrong > stats.correct){
+    html += `<div style="color:#ff4444;">⚠️ Schwierig!</div>`;
+  }
+}
+
 
 // 👉 Antwort anzeigen (nur im Lernmodus)
 if(spielModus === "learn" && antwortAngezeigt){
@@ -2438,6 +2807,16 @@ html += `</div>`;
 // 👉 WICHTIG: DOM setzen
 document.getElementById("wort").innerHTML = html;
 
+// 👇 HIER REIN
+if(frageLang === "zh"){
+const toggle = document.getElementById("togglePinyinInline");
+if(toggle){
+  toggle.addEventListener("change", function(){
+    showPinyin = this.checked;
+    updateCurrentQuestionUI(); // ✅ FIX
+  });
+}
+}
 
 speak(frageText);
     // Antworten bauen
@@ -2470,17 +2849,66 @@ while(antworten.length < 4 && safety < 20){
     shuffleArray(antworten);
 
 if(spielModus === "multiple"){
-  antworten.forEach(a=>{
-    const btn = document.createElement("button");
-    btn.innerText = a;
+antworten.forEach(a=>{
+  const btn = document.createElement("button");
+
+  btn.innerText = a;
+btn.dataset.answer = a;   // 🔥 HIER REIN
+
+  // 👉 Pinyin im Button speichern (unsichtbar)
+  if(antwortLang === "zh" && frageLang === "de"){
+    let match = aktuelleListe.find(v => 
+      v.zh && v.zh.includes(a)
+    );
+
+    if(match && match.pinyin){
+      const index = match.zh.indexOf(a);
+      const py = match.pinyin[index] || "";
+      btn.dataset.pinyin = py;
+    }
+  }
 
 btn.onclick = ()=>{
+
   if(answerLocked) return;
   answerLocked = true;
 
-  checkAntwort(a, w[antwortLang]);
-};
+  const richtigListe = w[antwortLang];
 
+  // ❌ FALSCH
+if(!richtigListe.includes(btn.dataset.answer)){
+
+  // ❌ nur der geklickte Button rot
+  btn.classList.add("wrong");
+
+  // 👉 Pinyin anzeigen (ohne alles rot zu machen)
+  const buttons = document.querySelectorAll("#antworten button");
+
+  buttons.forEach(b => {
+    if(b.dataset.pinyin){
+      b.innerHTML = `
+        <div>${b.innerText}</div>
+        <div class="pinyin">${b.dataset.pinyin}</div>
+      `;
+    }
+  });
+
+} else {
+
+  // ✅ richtige Antwort direkt grün
+  btn.classList.add("correct");
+}
+
+  // 👉 richtige Antworten markieren
+  const buttons = document.querySelectorAll("#antworten button");
+buttons.forEach(b => {
+  if(richtigListe.includes(b.dataset.answer)){
+    b.classList.add("correct");
+  }
+});
+
+  checkAntwort(a, richtigListe);
+};
     document.getElementById("antworten").appendChild(btn);
   });
 }
@@ -2491,6 +2919,61 @@ btn.onclick = ()=>{
   } catch(err){
     console.error("💥 Fehler in starteFrage:", err);
     nächsteFrage(); // 🔥 verhindert Freeze
+  }
+}
+
+function updateCurrentQuestionUI(){
+
+  if(!aktuelleVokabel) return;
+
+  const w = aktuelleVokabel;
+
+  const frageText = w[frageLang].join(" / ");
+
+  let extraInfo = "";
+
+  if(frageLang === "zh" && showPinyin){
+    extraInfo += `
+      <div class="pinyin">
+        ${(w.pinyin || []).join(" / ")}
+      </div>
+    `;
+  }
+
+  if(w.hsk){
+    extraInfo += `
+      <div class="hsk">
+        HSK ${w.hsk}
+      </div>
+    `;
+  }
+
+  let html = `
+    <div class="wort-box">
+      <div style="display:flex; align-items:center; justify-content:center; gap:15px;">
+        
+        <div>${frageText}</div>
+
+        <label style="font-size:16px; cursor:pointer;">
+          <input type="checkbox" id="togglePinyinInline" ${showPinyin ? "checked" : ""}>
+          🔤
+        </label>
+
+      </div>
+
+      ${extraInfo}
+    </div>
+  `;
+
+  document.getElementById("wort").innerHTML = html;
+
+  // 🔁 Toggle neu verbinden
+  const toggle = document.getElementById("togglePinyinInline");
+  if(toggle){
+    toggle.addEventListener("change", function(){
+      showPinyin = this.checked;
+      updateCurrentQuestionUI();
+    });
   }
 }
 
@@ -2589,13 +3072,15 @@ falschListe = falschListe.filter(v =>
 
   combo++;
   updateComboAnzeige();
-// 🗡️ ACHIEVEMENT: Feuer-Schwert
-if(combo >= 10 && !achievements.sword_fire){
-  achievements.sword_fire = true;
+// 🗡️ ACHIEVEMENT: Flammenschwert
+if(combo >= 10 && !achievements.sword_fire.unlocked){
+  achievements.sword_fire.unlocked = true;
+  achievements.sword_fire.reason = "10er Combo erreicht 🔥";
+
   saveAchievements();
-  unlockAchievement("🔥 Feuer-Schwert freigeschaltet!");
-  renderInventory(); // 🔥 DAS FEHLT
-renderItemBook();
+unlockAchievement("🔥 Flammenschwert freigeschaltet!", "sword_fire");
+  renderInventory();
+  renderItemBook();
 }
 
   let comboBonus = Math.floor(combo / 2);
@@ -2610,13 +3095,32 @@ renderItemBook();
 
 let extra = 0;
 
-if(achievements.sword_fire){
+if(achievements.sword_fire.unlocked){
   extra += 1;
 }
 
-state.punkte += gesamt + extra;
+// 📊 Statistik: richtig
+const key = getVocabKey(aktuelleVokabel);
+
+if(!vocabStats[key]){
+  vocabStats[key] = { correct: 0, wrong: 0 };
+}
+
+vocabStats[key].correct++;
+saveStats();
+
+let totalPoints = gesamt + extra;
+
+state.punkte += totalPoints;
+showFloatingScore(totalPoints);
 updateScoreUI();
-  let text = `Richtig! 🎉 +${gesamt} (⚡${bonus} 🔥${comboBonus})`;
+let text = `Richtig! 🎉 +${gesamt}`;
+
+if(extra > 0){
+  text += ` +${extra}🗡️`;
+}
+
+text += ` (⚡${bonus} 🔥${comboBonus})`;
 
   if(megaMode){
     text += " 💥 MEGA MODE!!!";
@@ -2640,7 +3144,9 @@ if(megaMode){
 }
 
 
+setTimeout(()=>{
   nächsteFrage();
+}, 300);
 }
 
 
@@ -2653,15 +3159,40 @@ function getModeIcon(){
 
 
 function falschAntwort(richtig){
-if(achievements.shield){
-  achievements.shield = false;
+if(state.shieldActive){
+  state.shieldActive = false;
+
+  document.getElementById("feedback").innerText = "🛡️ Block!";
+
+  setTimeout(()=>{
+    nächsteFrage();
+  }, 400);
+
+  return;
+}
+// 📊 Statistik: falsch
+const key = getVocabKey(aktuelleVokabel);
+
+if(!vocabStats[key]){
+  vocabStats[key] = { correct: 0, wrong: 0 };
+}
+
+vocabStats[key].wrong++;
+saveStats();
+if(achievements.shield.unlocked && !achievements.shield.used){
+
+  achievements.shield.used = true;
   saveAchievements();
 
   document.getElementById("feedback").innerText = "🛡️ Schild hat dich gerettet!";
-  renderInventory();
-renderItemBook();
 
-  nächsteFrage();
+  renderInventory();
+  renderItemBook();
+
+  setTimeout(()=>{
+    nächsteFrage();
+  }, 600);
+
   return;
 }
 if(spielModus === "learn"){
@@ -2686,7 +3217,7 @@ antwort: [...aktuelleVokabel[antwortLang]]
 // 👉 NEU: falsche Antwort speichern
 
 
-if(!achievements.crown){
+if(!achievements.crown.unlocked){
   combo = 0;
 }
 updateComboAnzeige();
@@ -2867,12 +3398,7 @@ function updateDailyProgress(){
   updateDailyUI();
 }
 
-function updateDailyUI(){
-  const el = document.getElementById("dailyBox");
-  if(el){
-    el.innerText = "🎯 " + dailyDone + " / " + dailyGoal + " | 🔥 " + streak;
-  }
-}
+function updateDailyUI(){}
 
 function updatePinyinVisibility(){
 
@@ -2882,6 +3408,9 @@ function updatePinyinVisibility(){
   const toggle = document.getElementById("pinyinToggle");
   const checkbox = document.getElementById("togglePinyin");
 
+  // 🔥 FIX: Existenz prüfen
+  if(!toggle || !checkbox) return;
+
   if(frage === "zh"){
     toggle.style.display = "block";
   } else {
@@ -2890,6 +3419,7 @@ function updatePinyinVisibility(){
     showPinyin = false;
   }
 }
+
 function ankiAnswer(type){
 
   if(isPaused) return;
@@ -2975,13 +3505,6 @@ const x = Math.min(rect.right + 20, window.innerWidth - 220);
 window.jubelChoreo = jubelChoreo;
 window.addEventListener("resize", positioniereElefant);
 
-
-document.addEventListener("keydown", (e)=>{
-  if(e.key === "e"){
-    console.log("TEST: Elefant wird ausgelöst");
-    jubelChoreo();
-  }
-});
 document.getElementById("checkBtn").onclick = checkTextAntwort;
 
 document.getElementById("textAntwort").addEventListener("keydown", (e)=>{
@@ -3001,7 +3524,9 @@ document.getElementById("hintBtn").onclick = function(){
 const frageText = w[frageLang].join(" / ");
   const level = "⭐".repeat(w.box || 1);
 
-let html = `<div class="wort-box">${frageText}<br><small>${level}</small>`;
+let html = `<div class="wort-box">${frageText}${
+  spielModus === "learn" ? `<br><small>${level}</small>` : ""
+}`;
   html += `<div class="deutsches-wort">${w[antwortLang].join(" / ")}</div>`;
   html += `</div>`;
 
@@ -3016,6 +3541,10 @@ let html = `<div class="wort-box">${frageText}<br><small>${level}</small>`;
   clearInterval(timerID);
 };
 function restartGame(){
+gameEnded = false;
+isSavingScore = false;
+  document.getElementById("pauseBtn").style.display = "block"; // 🔥 optional
+
 
   // Spiel sauber resetten
   resetGameState();
@@ -3080,13 +3609,27 @@ document.getElementById("themeSwitch").addEventListener("change", function(e){
 
 
 function spielBeenden(reason){
-const popup = document.getElementById("timeOverPopup");
-if(!wiederholModus){
-addHighscore(playerName, state.punkte);
-}
-isPaused = false;
-gesamtTimerLaeuft = false;
-console.log("FEHLER LISTE:", falschDetails);
+
+  if(gameEnded){
+    console.log("🚫 Spiel schon beendet:", reason);
+    return;
+  }
+
+  gameEnded = true;
+
+  document.getElementById("pauseBtn").style.display = "none";
+
+  const popup = document.getElementById("timeOverPopup");
+
+  if(!wiederholModus){
+    addHighscore(playerName, state.punkte);
+    updateAllHighscores();
+  }
+
+  isPaused = false;
+  gesamtTimerLaeuft = false;
+
+  console.log("FEHLER LISTE:", falschDetails);
 
   clearInterval(timerID);
   clearInterval(gesamtTimerID);
@@ -3106,6 +3649,7 @@ let html = `<h2>${title}</h2>`;
 
 endAnswersSolved = 0;
 endAnswersTotal = falschDetails.length;
+endHadMistake = false; // 🔥 reset für neue Runde
 // 🔥 wenn keine Fehler → Retry direkt erlauben
 if(falschDetails.length === 0){
   document.getElementById("retryBtn").disabled = false;
@@ -3142,11 +3686,7 @@ ${f.pinyin
   }"
 >
 
-    <button onclick="checkEndAnswer(
-      document.getElementById('endInput_${i}'),
-      ${JSON.stringify(f.richtig.split(" / "))},
-      ${i}
-    )">OK</button>
+<button onclick="checkEndAnswerClick(${i})">OK</button>
 
     <div id="endFeedback_${i}" style="margin-top:5px;"></div>
   </div>
@@ -3182,7 +3722,25 @@ popup.classList.add("popup-end");
 
   document.getElementById("overlay").style.display = "block";
   popup.style.display = "block";
-giveRandomItem();
+if(!wiederholModus){
+  setTimeout(() => {
+    giveLoot();
+  }, 300);
+}
+setTimeout(() => {
+  const firstInput = document.getElementById("endInput_0");
+  if(firstInput){
+    firstInput.focus();
+    firstInput.select();
+  }
+}, 50);
+// 👉 Fokus auf erstes Input setzen
+setTimeout(() => {
+  const firstInput = document.getElementById("endInput_0");
+  if(firstInput){
+    firstInput.focus();
+  }
+}, 50);
 }  
 
 
@@ -3201,7 +3759,9 @@ document.getElementById("wort").onclick = function(){
 const frageText = w[frageLang].join(" / ");
     const level = "⭐".repeat(w.box || 1);
 
-let html = `<div class="wort-box">${frageText}<br><small>${level}</small>`;
+let html = `<div class="wort-box">${frageText}${
+  spielModus === "learn" ? `<br><small>${level}</small>` : ""
+}`;
     html += `<div class="deutsches-wort">${w[antwortLang].join(" / ")}</div>`;
     html += `</div>`;
 
@@ -3267,121 +3827,63 @@ vokabeln = level2.map(v => ({
 
   startGame();
 };
-function giveRandomItem(){
+function giveLoot(){
 
-  let roll = Math.random();
-  let itemKey;
-
-  if(roll < 0.5){
-    itemKey = "shield";
-  } else if(roll < 0.8){
-    itemKey = "sword_fire";
-  } else if(roll < 0.95){
-    itemKey = "clock";
-  } else {
-    itemKey = "crown";
+  if(combo >= 10 && !achievements.sword_fire.unlocked){
+    achievements.sword_fire.unlocked = true;
+    achievements.sword_fire.reason = "10er Combo erreicht 🔥";
+    saveAchievements();
+    unlockAchievement("🔥 Flammenschwert freigeschaltet!", "sword_fire");
+    addItem("sword_fire", 1);
   }
 
-  achievements[itemKey] = true;
-  saveAchievements();
+  if(state.punkte >= 1000 && !achievements.clock.unlocked){
+    achievements.clock.unlocked = true;
+    achievements.clock.reason = "1000 Punkte erreicht ⏳";
+    saveAchievements();
+    unlockAchievement("⏳ Zeit-Booster freigeschaltet!", "clock");
+    addItem("clock", 1);
+  }
 
-  showItemDrop(itemKey);
-  renderInventory();
-renderItemBook();
-}
-
-
-function showItemDrop(key){
-
-  const item = ITEMS[key];
-
-  const popup = document.createElement("div");
-
-  popup.innerHTML = `
-    🎁 Neues Item!<br>
-    <b>${item.name}</b><br>
-    <small>${item.rarity.toUpperCase()}</small>
-  `;
-
-  popup.style.position = "fixed";
-  popup.style.top = "30%";
-  popup.style.left = "50%";
-  popup.style.transform = "translateX(-50%)";
-  popup.style.background = "black";
-  popup.style.color = "white";
-  popup.style.padding = "20px";
-  popup.style.borderRadius = "15px";
-  popup.style.zIndex = "10000";
-
-  document.body.appendChild(popup);
-
-  setTimeout(()=>popup.remove(), 2500);
 }
 
 
 function parseCustomVocab(){
 
-  const input = document.getElementById("customVocabInput").value.trim();
-  if(!input) return null;
+  const text1 = document.getElementById("inputLang1").value.trim();
+  const text2 = document.getElementById("inputLang2").value.trim();
 
-  const lines = input.split("\n");
+  if(!text1 || !text2) return null;
+
+  const lines1 = text1.split("\n");
+  const lines2 = text2.split("\n");
+
+  if(lines1.length !== lines2.length){
+    document.getElementById("feedback").innerText =
+      "❌ Anzahl Zeilen stimmt nicht überein";
+    return null;
+  }
 
   let customList = [];
-  let errorLines = [];
 
-  lines.forEach((line, index) => {
+  for(let i = 0; i < lines1.length; i++){
 
-    line = line.trim();
-    if(!line) return;
+    let l1 = lines1[i].trim();
+    let l2 = lines2[i].trim();
 
-    let spanischListe = [];
-    let deutschListe = [];
-
-    if(line.includes("-")){
-      let parts = line.split(/\s*-\s*/);
-
-      if(parts.length < 2){
-        errorLines.push(index);
-        return;
-      }
-
-      spanischListe = parts[0].split("/").map(w => w.trim()).filter(w => w);
-      deutschListe = parts[1].split("/").map(w => w.trim()).filter(w => w);
-    } else {
-      let parts = line.split(/\s+/);
-
-      if(parts.length < 2){
-        errorLines.push(index);
-        return;
-      }
-
-      let spanischRaw = parts.shift();
-      let deutschRaw = parts.join(" ");
-
-      spanischListe = spanischRaw.split("/").map(w => w.trim()).filter(w => w);
-      deutschListe = deutschRaw.split("/").map(w => w.trim()).filter(w => w);
-    }
-
-    if(spanischListe.length === 0 || deutschListe.length === 0){
-      errorLines.push(index);
-      return;
-    }
+    if(!l1 || !l2) continue;
 
 customList.push({
-  es: spanischListe,
-  de: deutschListe,
-en: [],
-fr: [],
+  [frageLang]: l1.split("/"),
+  [antwortLang]: l2.split("/"),
+  en: [],
+  fr: [],
   box: 1,
   next: 0
 });
-  });
-
-  highlightErrors(lines, errorLines);
-
-  if(errorLines.length > 0 || customList.length === 0){
-    return null; // ❌ keine Alerts!
   }
+
+  if(customList.length === 0) return null;
 
   return customList;
 }
@@ -3441,7 +3943,6 @@ customList.push({
       localStorage.setItem("customVocab", JSON.stringify(customList));
 
       // 👉 UI Feedback
-      document.getElementById("gameTitle").innerText = "📊 Excel Vokabeln";
       document.getElementById("feedback").innerText = "🚀 Excel geladen – Spiel startet...";
 
       // 👉 AUTO START (🔥 DAS IST NEU)
@@ -3459,6 +3960,14 @@ customList.push({
   reader.readAsArrayBuffer(file);
 }
 function startGame(){
+gameEnded = false;
+isSavingScore = false;
+document.getElementById("statsPanel").style.display = "none";
+document.getElementById("statsBtn").innerText = "📊 Statistik anzeigen";
+  document.getElementById("pauseBtn").style.display = "block"; // 🔥 HIER
+
+const langValue = document.getElementById("languageSelector").value;
+aktuelleSprache = langValue;
 updatePinyinVisibility();
 const lang = document.getElementById("languageSelector").value.split("-");
 frageLang = lang[0];
@@ -3472,6 +3981,7 @@ document.getElementById("startItemBook").style.display = "none";
 
   spielModus = document.getElementById("modeSelector").value;
   playerName = document.getElementById("playerName").value.trim() || "Spieler";
+localStorage.setItem("playerName", playerName);
 
   gesamtSpielZeit = parseInt(document.getElementById("timeSelector").value);
 aktuelleZeit = gesamtSpielZeit;
@@ -3522,6 +4032,8 @@ updateScoreUI();
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("status").style.display = "flex";
   document.getElementById("gameArea").style.display = "flex";
+document.getElementById("inventory").style.display = "block";
+document.getElementById("itemBook").style.display = "block";   // ✅ bleibt sichtbar
 
   document.getElementById("timerBarContainer").style.display = "block";
   document.getElementById("progressContainer").style.display = "block";
@@ -3542,30 +4054,25 @@ document.getElementById("excelFile").addEventListener("change", function(){
   importExcelAndStart();
 });
 
-document.getElementById("togglePinyin").addEventListener("change", function(){
-  showPinyin = this.checked;
-
-  console.log("Toggle:", showPinyin);
-
-  if(aktuelleVokabel){
-    starteFrage();
-  }
-});
-
-
-
 document.getElementById("modeSelector").addEventListener("change", function(){
 
   spielModus = this.value;
   updateAllHighscores();
 
 });
+
+document.getElementById("timeSelector").addEventListener("change", function(){
+  updateAllHighscores(); // 🔥 NEU
+});
+
 document.getElementById("languageSelector").addEventListener("change", function(){
 
   updatePinyinVisibility();
 
+  updateAllHighscores(); // 🔥 NEU
+
   if(aktuelleVokabel){
-    starteFrage(); // aktualisiert Anzeige
+    starteFrage();
   }
 
 });
@@ -3573,18 +4080,66 @@ document.getElementById("languageSelector").addEventListener("change", function(
 function renderInventory(){
 
   const inv = document.getElementById("inventory");
-if(!inv) return;
-
+  if(!inv) return;
 
   let html = "<h3>🎒 Items</h3>";
 
-  for(let key in achievements){
-    if(achievements[key] && ITEMS[key]){
-      html += `${ITEMS[key].name}<br>`;
-    }
-  }
+  inventory.forEach(item => {
+    html += `
+      <div class="item-entry">
+        <button onclick="useItem('${item.id}')">
+          ${ITEMS[item.id].name} (${item.charges})
+        </button>
+      </div>
+    `;
+  });
 
   inv.innerHTML = html;
+}
+
+function addItem(id, amount = 1){
+  let item = inventory.find(i => i.id === id);
+
+  if(item){
+    item.charges += amount;
+  } else {
+    inventory.push({ id, charges: amount });
+  }
+
+  renderInventory();
+}
+
+function useItem(id){
+  let item = inventory.find(i => i.id === id);
+
+  if(!item || item.charges <= 0) return;
+
+  item.charges--;
+
+  applyItemEffect(id);
+
+  if(item.charges <= 0){
+    inventory = inventory.filter(i => i.id !== id);
+  }
+
+  renderInventory();
+}
+
+function applyItemEffect(id){
+
+  if(id === "shield"){
+    state.shieldActive = true;
+    document.getElementById("feedback").innerText = "🛡️ Schild aktiv!";
+  }
+
+  if(id === "clock"){
+    state.timeFreeze = true;
+    document.getElementById("feedback").innerText = "⏳ Zeit gestoppt!";
+
+    setTimeout(()=>{
+      state.timeFreeze = false;
+    }, 3000);
+  }
 }
 
 function renderItemBook(){
@@ -3594,19 +4149,27 @@ const startBook = document.getElementById("startItemBook");
 
   let html = "<h3>📖 Item-Lexikon</h3>";
 
-  for(let key in ITEMS){
+for(let key in ITEMS){
 
-    const item = ITEMS[key];
-    const unlocked = achievements[key];
+  const item = ITEMS[key];
+  const data = achievements[key];
+const unlocked = data?.unlocked && !data?.used;
+  html += `
+    <div class="item-entry ${!unlocked ? "item-locked" : ""}">
+      <b>${unlocked ? item.name : "❓ Unbekannt"}</b><br>
+      <small>${unlocked ? item.desc : "Noch nicht freigeschaltet"}</small><br>
 
-    html += `
-      <div class="item-entry ${!unlocked ? "item-locked" : ""}">
-        <b>${unlocked ? item.name : "❓ Unbekannt"}</b><br>
-        <small>${unlocked ? item.desc : "Noch nicht freigeschaltet"}</small><br>
-        ⭐ ${item.rarity}
-      </div>
-    `;
-  }
+${unlocked 
+  ? `<div style="font-size:12px; opacity:0.8;">
+       🏆 ${item.unlock}
+     </div>` 
+  : ""
+}
+
+${"⭐".repeat(item.stars || 1)}
+    </div>
+  `;
+}
 
 if(book) book.innerHTML = html;
 if(startBook) startBook.innerHTML = html;
@@ -3672,42 +4235,85 @@ function checkEndAnswer(input, korrekt, index){
   const korrektListe = korrekt.map(w => w.toLowerCase());
 
   if(korrektListe.includes(value)){
-    feedback.innerHTML = `<span style="color:#00e600;">✔ Richtig!</span>`;
-    input.disabled = true;
-  } else {
-    el.attempts++;
 
-    if(el.attempts >= 3){
-      feedback.innerHTML = `
-        <span style="color:#00e600;">
-          ➜ ${korrekt.join(" / ")}
-        </span>
-      `;
-      input.disabled = true;
-    } else {
-      feedback.innerHTML = `❌ Versuch ${el.attempts}/3`;
-    }
+    feedback.innerHTML = `<span style="color:#00e600;">✔ Richtig!</span>`;
+    playSound("richtig");
+
+  } else {
+
+    endHadMistake = true;
+
+    feedback.innerHTML = `
+      <span style="color:#ff4444;">
+        ✖ Falsch! ➜ ${korrekt.join(" / ")}
+      </span>
+    `;
+
+    playSound("falsch");
+
+    input.classList.add("shake");
+
+    setTimeout(()=>{
+      input.classList.remove("shake");
+    }, 300);
   }
+
+  input.disabled = true;
+
+  setTimeout(()=>{
+    input.focus();
+  }, 0);
 
   input.value = "";
 
-  // ✅ HIER rein (NEU)
   if(input.disabled){
+
     endAnswersSolved++;
 
+    const nextInput = document.getElementById("endInput_" + (index + 1));
+
+    if(nextInput && !nextInput.disabled){
+      nextInput.focus();
+      nextInput.select();
+    }
+
     if(endAnswersSolved >= endAnswersTotal){
+
       const btn = document.getElementById("retryBtn");
+
       if(btn){
         btn.disabled = false;
         btn.innerText = "🔄 noch mal";
+      }
+
+      if(!endHadMistake){
+
+        achievements.shield.unlocked = true;
+        achievements.shield.used = false;
+        achievements.shield.reason = "Alle Fehler perfekt korrigiert 🧠";
+
+        saveAchievements();
+        unlockAchievement("🛡️ Schutzschild erhalten!", "shield");
+
+        setTimeout(() => {
+          renderInventory();
+          renderItemBook();
+        }, 50);
+
+      } else {
+        document.getElementById("feedback").innerText =
+          "❌ Nicht perfekt – kein Schild";
       }
     }
   }
 }
 
 function initApp(){
+const savedName = localStorage.getItem("playerName");
+if(savedName){
+  document.getElementById("playerName").value = savedName;
+}
 
-  // Theme laden
   const saved = localStorage.getItem("theme");
   const icon = document.getElementById("themeIcon");
 
@@ -3723,7 +4329,10 @@ function initApp(){
   positioniereElefant();
   loadCustomVocabFromStorage();
   initVoices();
+
+  updateAllHighscores(); // 🔥 HIER
 }
+
 window.addEventListener("load", initApp);
 
 function initVoices(){
@@ -3738,17 +4347,208 @@ function loadCustomVocabFromStorage(){
   const data = localStorage.getItem("customVocab");
   if(!data) return;
 
-  vokabeln = JSON.parse(data);
+  const list = JSON.parse(data);
 
-  const inputText = vokabeln.map(v => 
-    v.es.join("/") + " " + v.de.join("/")
-  ).join("\n");
+  let left = [];
+  let right = [];
 
-  document.getElementById("customVocabInput").value = inputText;
-  document.getElementById("gameTitle").innerText = "📚 Eigene Vokabeln aktiv";
+  list.forEach(v => {
+    left.push((v.es || []).join("/"));
+    right.push((v.de || []).join("/"));
+  });
+
+  document.getElementById("inputLang1").value = left.join("\n");
+  document.getElementById("inputLang2").value = right.join("\n");
+
+  vokabeln = list;
 
   console.log("📂 Custom Vokabeln geladen");
 }
+document.getElementById("statsBtn").onclick = function(){
+  showAllStats();
+};
+
+function showAllStats(){
+const lang = document.getElementById("languageSelector").value.split("-");
+frageLang = lang[0];
+antwortLang = lang[1];
+
+  const panel = document.getElementById("statsPanel");
+  const btn = document.getElementById("statsBtn");
+
+  // Toggle
+  if(panel.style.display === "block"){
+    panel.style.display = "none";
+    btn.innerText = "📊 Statistik anzeigen";
+    return;
+  }
+
+  let html = `
+    <h2>📊 Deine Vokabel-Statistik</h2>
+    <div id="statsGrid">
+  `;
+
+  if(Object.keys(vocabStats).length === 0){
+    html += "<p>Noch keine Daten vorhanden</p>";
+  }
+
+// 👉 aktuelle Vokabeln als Set (schnell)
+const standardListe = level2.map(v => ({
+  es: v[0].split("/"),
+  de: v[1].split("/"),
+  en: v[2].split("/"),
+  fr: v[3] ? v[3].split("/") : [],
+  zh: v[4] ? v[4].split("/") : []
+}));
+
+const basisListe = standardListe.filter(v =>
+  v[frageLang] &&
+  v[antwortLang] &&
+  v[frageLang].length > 0 &&
+  v[antwortLang].length > 0
+);
+
+let entries = basisListe.map(v => {
+
+  const key = getVocabKey(v);
+  const stats = vocabStats[key] || { correct: 0, wrong: 0 };
+
+  return [key, stats];
+});
+
+entries.sort((a, b) => {
+
+  const totalA = a[1].correct + a[1].wrong;
+  const totalB = b[1].correct + b[1].wrong;
+
+  const quoteA = totalA > 0 ? (a[1].correct / totalA) : 0;
+  const quoteB = totalB > 0 ? (b[1].correct / totalB) : 0;
+
+  return quoteA - quoteB; // 🔴 schlecht → 🟢 gut
+});
+
+ entries.forEach(([key, s], index)=>{
+
+  const total = s.correct + s.wrong;
+  const quote = total > 0 ? Math.round((s.correct / total) * 100) : 0;
+
+  let bg = "#9e9e9e"; // grau (noch nie gespielt)
+  let label = "neu";
+
+  if(total > 0){
+    if(quote < 40){
+      bg = "#f44336"; // 🔴
+      label = "schwer";
+    }
+    else if(quote < 60){
+      bg = "#ff9800"; // 🟠
+      label = "unsicher";
+    }
+    else if(quote < 80){
+      bg = "#ffeb3b"; // 🟡
+      label = "ok";
+    }
+else{
+  bg = "#4caf50"; // 🟢
+
+  if(quote === 100){
+    label = "perfekt";
+  } else {
+    label = "sicher";
+  }
+}
+  }
+
+const isPerfect = quote === 100;
+
+html += `
+<div style="
+  position: relative;
+  padding:14px;
+    border-radius:14px;
+    background:${bg};
+    color:${quote >= 60 ? "#000" : "#fff"};
+    text-align:center;
+
+    border: ${isPerfect ? "3px solid gold" : "none"};
+    box-shadow: ${isPerfect 
+      ? "0 0 20px gold, 0 4px 12px rgba(0,0,0,0.2)" 
+      : "0 4px 12px rgba(0,0,0,0.2)"};
+
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+padding:10px;
+    font-weight:bold;
+  ">
+
+<div style="
+  margin:8px 0;
+  font-size:20px;
+  line-height:1.3;
+">
+  ${key.split("→").join("<br>→ ")}
+</div>
+
+      <div style="font-size:14px;">
+        ✅ ${s.correct} | ❌ ${s.wrong}
+      </div>
+<div class="tile-number">
+  #${index+1}
+</div>
+<div style="font-size:14px; opacity:0.8;">
+  ${quote}% ${isPerfect ? "👑" : ""}
+</div>
+
+  </div>
+`;
+});
+
+  html += "</div>";
+
+  panel.innerHTML = html;
+  panel.style.display = "block";
+
+  // 🔥 NEU: Button-Text ändern
+  btn.innerText = "❌ Statistik ausblenden";
+}
+function showFloatingScore(points){
+
+  const scoreEl = document.getElementById("scoreInline");
+  const rect = scoreEl.getBoundingClientRect();
+
+  const el = document.createElement("div");
+  el.className = "floating-score";
+  el.innerText = "+" + points;
+
+  // 🔥 FIX: richtige Position (inkl. Scroll)
+  el.style.left = (rect.left + window.scrollX + rect.width / 2) + "px";
+  el.style.top  = (rect.top  + window.scrollY) + "px";
+
+  document.body.appendChild(el);
+
+  // 🔥 kleine seitliche Bewegung
+  const randomX = (Math.random() - 0.5) * 60;
+  el.style.transform = `translateX(${randomX}px)`;
+
+  setTimeout(() => {
+    el.remove();
+  }, 1000);
+}
+
+function checkEndAnswerClick(index){
+
+  const input = document.getElementById("endInput_" + index);
+
+  const korrekt = JSON.parse(input.dataset.answers);
+
+  checkEndAnswer(input, korrekt, index);
+}
+
+
 
 
 
